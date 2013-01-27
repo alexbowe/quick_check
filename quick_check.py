@@ -39,6 +39,13 @@ octets   = alphabet(8)
 hextets  = alphabet(16)
 zeros    = repeat(0)
 ones     = repeat(1)
+powers_of_two = lambda lo,hi: (2**x for x in integers(lo, hi))
+
+def from_list(s):
+  s=list(s)
+  element_thunk = lambda: s[random.randint(0,len(s-1))]
+  bounds = s[0], s[-1]
+  return _bounded_generator(bounds, element_thunk)
 
 def for_all(tries=1000, **kwargs):
   def wrap(f):
