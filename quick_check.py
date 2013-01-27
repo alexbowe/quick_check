@@ -12,9 +12,13 @@ def _dethunk_repeat(thunk):
 def _bounded_generator(bounds, thunk):
   return it.chain(bounds, _dethunk_repeat(thunk))
 
-def integers(low=0, high=100):
-  bounds = (low, high)
-  int_thunk = lambda: random.randint(low, high)
+def _nearest_multiple(x,m):
+  return x/m * m
+
+def integers(low=0, high=100, grain=1):
+  high = _nearest_multiple(high, grain)
+  bounds = (low, nearest_multiple)
+  int_thunk = lambda: _nearest_multiple(random.randint(low, high), step)
   return _bounded_generator(bounds, int_thunk)
 
 def lists(items=integers(), size=(0, 100)):
@@ -41,7 +45,8 @@ def for_all(tries=1000, **kwargs):
     @functools.wraps(f)
     def run_tries(*inargs, **inkwargs):
       for _ in xrange(tries):
-        random_kwargs = (dict((name, gen.next()) for (name, gen) in kwargs.iteritems()))
+        iter_kwargs = map(iter, kwargs)
+        random_kwargs = (dict((name, gen.next()) for (name, gen) in iter_kwargs.iteritems()))
         random_kwargs.update(**inkwargs)
         f(*inargs, **random_kwargs)
     return run_tries
