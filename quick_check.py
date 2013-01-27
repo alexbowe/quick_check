@@ -17,8 +17,8 @@ def _nearest_multiple(x,m):
 
 def integers(low=0, high=100, grain=1):
   high = _nearest_multiple(high, grain)
-  bounds = (low, nearest_multiple)
-  int_thunk = lambda: _nearest_multiple(random.randint(low, high), step)
+  bounds = (low, high)
+  int_thunk = lambda: _nearest_multiple(random.randint(low, high), grain)
   return _bounded_generator(bounds, int_thunk)
 
 def lists(items=integers(), size=(0, 100)):
