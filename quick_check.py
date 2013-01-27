@@ -52,8 +52,7 @@ def for_all(tries=1000, **kwargs):
     @functools.wraps(f)
     def run_tries(*inargs, **inkwargs):
       for _ in xrange(tries):
-        iter_kwargs = map(iter, kwargs)
-        random_kwargs = (dict((name, gen.next()) for (name, gen) in iter_kwargs.iteritems()))
+        random_kwargs = (dict((name, gen.next()) for (name, gen) in kwargs.iteritems()))
         random_kwargs.update(**inkwargs)
         f(*inargs, **random_kwargs)
     return run_tries
